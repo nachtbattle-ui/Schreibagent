@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/jonas/Downloads/toolbox_16.html -->
+<!-- saved from url=(0048)file:///C:/Users/jonas/Downloads/toolbox_23.html -->
 <html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,14 +197,8 @@ hr { border: none; border-top: 1px solid #1a1a1a; margin: 1.25rem 0; }
 <body>
 
 <div class="sidebar">
-  <!-- API KEY INPUT -->
-  <div class="volume-wrap" style="margin-top:8px; flex-direction:column; align-items:stretch; gap:4px;">
-    <div style="font-size:10px;color:#333;text-transform:uppercase;letter-spacing:0.08em;">API-Key</div>
-    <div style="display:flex;gap:4px;align-items:center;">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style="flex:1;font-size:11px;font-family:inherit;background:#0f0f0f;border:1px solid #1f1f1f;border-radius:6px;padding:5px 8px;color:#e0e0e0;min-width:0;" oninput="updateAPIKey(this.value)">
-      <span id="apiKeyStatus" style="font-size:14px;flex-shrink:0;">❌</span>
-    </div>
-  </div>
+  <!-- API KEY BUTTON -->
+  <button class="nav-item" onclick="openAPIKeyModal()" id="apiKeyBtn" style="margin-bottom:4px;">🔑 API-Key <span id="apiKeyStatus">✅</span></button>
   <div class="volume-wrap">
     <span class="volume-icon" id="volIcon" onclick="toggleMute()">🔊</span>
     <input type="range" id="volumeSlider" min="0" max="100" value="40" oninput="setVolume(this.value)" title="Lautstärke">
@@ -424,20 +418,56 @@ function setAPIKey(key) {
   localStorage.setItem('toolbox_api_key', key.trim());
 }
 function updateAPIKey(val) {
+  // kept for compatibility – modal uses saveAPIKeyFromModal instead
+}
+function openAPIKeyModal() {
+  const existing = document.getElementById('apiKeyModal');
+  if (existing) { existing.remove(); return; }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'apiKeyModal';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;';
+  overlay.onclick = (e) => { if (e.target === overlay) { overlay.remove(); } };
+
+  overlay.innerHTML = `
+    <div style="background:#141414;border:1px solid #2a2a2a;border-radius:14px;padding:1.5rem;width:380px;max-width:90vw;">
+      <div style="font-size:14px;font-weight:600;color:#e0e0e0;margin-bottom:0.5rem;">🔑 API-Key eingeben</div>
+      <div style="font-size:12px;color:#444;margin-bottom:1rem;">Wird nur lokal in deinem Browser gespeichert – nie im Code.</div>
+      <input type="password" id="apiKeyModalInput" placeholder="sk-ant-api03-..." 
+        style="width:100%;font-size:14px;font-family:inherit;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:8px;padding:10px 12px;color:#e0e0e0;outline:none;margin-bottom:1rem;"
+        value="${getAPIKey()}" />
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button onclick="document.getElementById('apiKeyModal').remove()" 
+          style="padding:8px 14px;font-size:13px;cursor:pointer;border:1px solid #1f1f1f;border-radius:7px;background:transparent;color:#666;">Abbrechen</button>
+        <button onclick="saveAPIKeyFromModal()" 
+          style="padding:8px 14px;font-size:13px;cursor:pointer;border:none;border-radius:7px;background:#e0e0e0;color:#0a0a0a;font-weight:500;">Speichern</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById('apiKeyModalInput')?.focus(), 100);
+
+  // Save on Enter
+  overlay.querySelector('#apiKeyModalInput').onkeydown = (e) => {
+    if (e.key === 'Enter') saveAPIKeyFromModal();
+  };
+}
+
+function saveAPIKeyFromModal() {
+  const val = document.getElementById('apiKeyModalInput')?.value?.trim() || '';
   setAPIKey(val);
-  document.getElementById('apiKeyStatus').textContent = val.trim().startsWith('sk-ant-') ? '✅' : '❌';
+  const ok = val.length > 20;
+  document.getElementById('apiKeyStatus').textContent = ok ? '✅' : '❌';
+  document.getElementById('apiKeyModal')?.remove();
+  if (ok) showToast('✅ API-Key gespeichert');
 }
+
 function showAPIKeyPrompt() {
-  document.getElementById('apiKeyInput').focus();
-  document.getElementById('apiKeyInput').style.borderColor = '#5a3a3a';
-  setTimeout(() => { document.getElementById('apiKeyInput').style.borderColor = ''; }, 2000);
+  openAPIKeyModal();
 }
+
 function initAPIKeyUI() {
   const key = getAPIKey();
-  if (key) {
-    document.getElementById('apiKeyInput').value = key;
-    document.getElementById('apiKeyStatus').textContent = key.startsWith('sk-ant-') ? '✅' : '❌';
-  }
+  document.getElementById('apiKeyStatus').textContent = key.length > 20 ? '✅' : '❌';
 }
 let pdfDocs = [], folienPages = [];
 let folienRunning = false;
@@ -1307,7 +1337,7 @@ async function summarizeSlides() {
     startTypewriter();
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ""x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      headers: { "Content-Type": "application/json", "x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: maxTok || 400, messages: [{ role: "user", content: prompt }] }),
       signal: folienAbortController.signal
     });
@@ -1400,7 +1430,11 @@ async function summarizeSlides() {
       container.appendChild(div);
     }
   } catch(e) {
-    if (e.name !== 'AbortError') document.getElementById('folienStatus').textContent = 'Fehler: ' + e.message;
+    stopTypewriter();
+    if (e.name !== 'AbortError') {
+      console.error('Summarize error:', e);
+      document.getElementById('folienStatus').textContent = 'Fehler: ' + e.message;
+    }
   }
 
   document.getElementById('progressWrap').style.display = 'none';
@@ -1408,7 +1442,7 @@ async function summarizeSlides() {
   const orgaCount = filteredPages.filter(s => isOrga(s.text, s.wc)).length;
   document.getElementById('resultsCount').textContent = `${allSummaries.length} Blöcke · ${orgaCount} Orga-Folien übersprungen`;
   document.getElementById('folienStatus').textContent = folienRunning ? 'Fertig ✓' : `Gestoppt nach ${allSummaries.length} Blöcken.`;
-  if (folienRunning) playBell();
+  if (folienRunning) playSlideDone();
   document.getElementById('resetFolienBtn').style.display = 'inline-block';
   document.getElementById('saveProjectBtn').style.display = 'flex';
   renderSidebarProjects();
@@ -1468,7 +1502,7 @@ async function askChat(userPrompt) {
     startTypewriter();
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ""x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      headers: { "Content-Type": "application/json", "x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 600, system: systemMsg, messages: chatHistory })
     });
     const data = await res.json();
@@ -1546,7 +1580,7 @@ async function rewrite() {
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ""x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      headers: { "Content-Type": "application/json", "x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 1000, messages: [{ role: "user", content: prompt }] }),
       signal: schreibAbortController.signal
     });
@@ -1638,7 +1672,7 @@ async function generateTopics() {
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ""x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      headers: { "Content-Type": "application/json", "x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({
         model: "claude-sonnet-4-5", max_tokens: 600,
         messages: [{ role: "user", content: `Analysiere diese Folien-Zusammenfassungen und erkenne 3-7 übergeordnete Themenblöcke. Weise jeder Folie ein Thema zu.
@@ -1796,44 +1830,3 @@ function searchSlide(val) {
   // Find and highlight matching slide
   const items = document.querySelectorAll('.slide-item:not(.orga), .summary-block');
   let found = null;
-
-  items.forEach(el => {
-    const label = el.querySelector('.slide-num, .summary-label')?.textContent || '';
-    const nums = label.match(/\d+/g)?.map(Number) || [];
-    const matches = targetNums.some(t => nums.some(n => n === t || (nums.length > 1 && t >= nums[0] && t <= nums[nums.length-1])));
-
-    el.style.display = matches ? '' : 'none';
-    el.style.borderColor = matches ? '#5a8a5a' : '';
-    if (matches && !found) found = el;
-  });
-
-  // Hide headings during search
-  document.querySelectorAll('.topic-heading').forEach(h => h.style.display = 'none');
-
-  if (found) {
-    found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // Flash highlight
-    found.style.borderColor = '#6aaa6a';
-    setTimeout(() => { found.style.borderColor = ''; }, 1500);
-  }
-}
-
-function copyAllSlides() {
-  const items = document.querySelectorAll('.slide-item:not(.orga), .summary-block');
-  let text = '';
-  items.forEach(el => {
-    const meta = el.querySelector('.slide-num, .summary-label')?.textContent || '';
-    const points = el.querySelectorAll('.bullet-point');
-    if (points.length) { text += meta + '\n'; points.forEach(p => text += '• ' + p.textContent.trim() + '\n'); }
-    else text += meta + '\n' + (el.querySelector('.slide-text,.summary-text')?.textContent||'') + '\n';
-    text += '\n';
-  });
-  navigator.clipboard.writeText(text.trim()).then(() => {
-    const btn = document.getElementById('copyAllBtn');
-    btn.textContent = 'Kopiert ✓'; setTimeout(() => btn.textContent = 'Kopieren', 2000);
-  });
-}
-</script>
-
-
-</body></html>
