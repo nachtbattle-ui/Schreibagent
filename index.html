@@ -1830,3 +1830,44 @@ function searchSlide(val) {
   // Find and highlight matching slide
   const items = document.querySelectorAll('.slide-item:not(.orga), .summary-block');
   let found = null;
+
+  items.forEach(el => {
+    const label = el.querySelector('.slide-num, .summary-label')?.textContent || '';
+    const nums = label.match(/\d+/g)?.map(Number) || [];
+    const matches = targetNums.some(t => nums.some(n => n === t || (nums.length > 1 && t >= nums[0] && t <= nums[nums.length-1])));
+
+    el.style.display = matches ? '' : 'none';
+    el.style.borderColor = matches ? '#5a8a5a' : '';
+    if (matches && !found) found = el;
+  });
+
+  // Hide headings during search
+  document.querySelectorAll('.topic-heading').forEach(h => h.style.display = 'none');
+
+  if (found) {
+    found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Flash highlight
+    found.style.borderColor = '#6aaa6a';
+    setTimeout(() => { found.style.borderColor = ''; }, 1500);
+  }
+}
+
+function copyAllSlides() {
+  const items = document.querySelectorAll('.slide-item:not(.orga), .summary-block');
+  let text = '';
+  items.forEach(el => {
+    const meta = el.querySelector('.slide-num, .summary-label')?.textContent || '';
+    const points = el.querySelectorAll('.bullet-point');
+    if (points.length) { text += meta + '\n'; points.forEach(p => text += '• ' + p.textContent.trim() + '\n'); }
+    else text += meta + '\n' + (el.querySelector('.slide-text,.summary-text')?.textContent||'') + '\n';
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const btn = document.getElementById('copyAllBtn');
+    btn.textContent = 'Kopiert ✓'; setTimeout(() => btn.textContent = 'Kopieren', 2000);
+  });
+}
+</script>
+
+
+</body></html>
