@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/jonas/Downloads/toolbox_23.html -->
-<html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="de">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jonas · Toolbox</title>
 <style>
@@ -184,6 +184,40 @@ select option { background: #141414; }
 .range-track input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #e0e0e0; cursor: pointer; pointer-events: all; border: 2px solid #0a0a0a; box-shadow: 0 0 0 1px #333; }
 .range-track input[type=range]::-webkit-slider-thumb:hover { background: #fff; }
 .range-info { font-size: 12px; color: #444; margin-top: 4px; }
+
+/* MOBILE */
+#menuBtn { display:none; position:fixed; top:8px; left:8px; z-index:60; width:38px; height:38px; border-radius:9px; border:1px solid #2a2a2a; background:#111; color:#ccc; font-size:18px; cursor:pointer; }
+.sidebar { overflow-y:auto; }
+@media (max-width: 800px) {
+  #menuBtn { display:block; }
+  .sidebar { transform: translateX(-105%); transition: transform .2s; width: 240px; z-index: 55; box-shadow: 4px 0 24px rgba(0,0,0,.6); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar { padding-top: 56px; }
+  .main { margin-left: 0; padding: 56px 14px 24px; max-width: 100%; }
+  .folien-layout { left: 0; flex-direction: column; padding-top: 48px; }
+  .folien-left { padding: 12px 14px 24px; }
+  .folien-right { display: none; }
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+  .mc-score { gap: 8px; }
+}
+#mcFocus { width:100%; font-size:14px; font-family:inherit; background:#0f0f0f; border:1px solid #1f1f1f; border-radius:8px; padding:9px 12px; color:#e0e0e0; outline:none; }
+#mcFocus:focus { border-color:#333; }
+/* MC */
+.mc-q{background:#141414;border:1px solid #1f1f1f;border-radius:12px;padding:1.2rem 1.3rem;margin-bottom:12px;}
+.mc-q-head{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;justify-content:space-between;}
+.mc-q-text{font-size:15px;color:#e0e0e0;line-height:1.5;margin-bottom:12px;}
+.mc-opt{display:flex;gap:10px;padding:9px 12px;border:1px solid #232323;border-radius:8px;margin-bottom:6px;cursor:pointer;color:#aaa;font-size:14px;line-height:1.4;transition:all .12s;}
+.mc-opt:hover{background:#1a1a1a;border-color:#333;}
+.mc-opt .mc-letter{font-weight:600;color:#666;min-width:16px;}
+.mc-q.answered .mc-opt{cursor:default;}
+.mc-q.answered .mc-opt:hover{background:transparent;border-color:#232323;}
+.mc-opt.correct{border-color:#2a5a2a;background:#0f1a0f;color:#7ac07a;}
+.mc-opt.wrong{border-color:#5a2a2a;background:#1a0f0f;color:#d08080;}
+.mc-expl{display:none;margin-top:10px;padding:10px 12px;background:#101010;border-left:2px solid #333;font-size:13px;color:#888;line-height:1.55;}
+.mc-q.answered .mc-expl{display:block;}
+.mc-score{position:sticky;top:0;z-index:5;background:#0a0a0a;padding:8px 0;font-size:13px;color:#888;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.mc-score strong{color:#e0e0e0;}
+
 .pdf-item-range .range-track { margin: 4px 0 12px; }
 .pdf-item-range .range-labels { font-size: 12px; margin-bottom: 6px; }
 
@@ -192,223 +226,23 @@ select option { background: #141414; }
 .panel-folien { display: none; }
 .panel-folien.active { display: flex; }
 hr { border: none; border-top: 1px solid #1a1a1a; margin: 1.25rem 0; }
-
-
-/* ============================================================
-   MOBILE / GITHUB PAGES FIXES
-   ============================================================ */
-html { width: 100%; overflow-x: hidden; }
-body { width: 100%; overflow-x: hidden; }
-button, input, textarea, select { font: inherit; }
-button, .nav-item, .upload-zone, .slide-item, .topic-chip { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
-
-.mobile-topbar,
-.sidebar-backdrop { display: none; }
-
-.mobile-topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  z-index: 900;
-  align-items: center;
-  gap: 10px;
-  padding: 0 12px env(safe-area-inset-right) 0 calc(12px + env(safe-area-inset-left));
-  background: rgba(10,10,10,0.92);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid #1f1f1f;
-}
-.mobile-menu-btn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #242424;
-  border-radius: 10px;
-  background: #111;
-  color: #e0e0e0;
-  font-size: 20px;
-  cursor: pointer;
-}
-.mobile-title {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-.mobile-title strong { font-size: 14px; color: #fff; font-weight: 600; }
-.mobile-title span { font-size: 11px; color: #555; margin-top: 2px; }
-.sidebar-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 950;
-  background: rgba(0,0,0,0.62);
-}
-
-@media (max-width: 900px) {
-  .mobile-topbar { display: flex; }
-  body { padding-top: 56px; min-height: 100dvh; }
-
-  .sidebar {
-    width: min(84vw, 300px);
-    height: 100dvh;
-    z-index: 1000;
-    transform: translateX(-105%);
-    transition: transform 0.22s ease;
-    overflow-y: auto;
-    padding: 1rem;
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-    box-shadow: 16px 0 40px rgba(0,0,0,0.35);
-  }
-  body.sidebar-open .sidebar { transform: translateX(0); }
-  body.sidebar-open .sidebar-backdrop { display: block; }
-
-  .nav-item {
-    min-height: 44px;
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-  .volume-wrap { min-height: 42px; }
-  #volumeSlider::-webkit-slider-thumb { width: 18px; height: 18px; }
-
-  .main {
-    margin-left: 0;
-    max-width: none;
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .folien-layout {
-    position: static;
-    left: auto;
-    right: auto;
-    top: auto;
-    bottom: auto;
-    width: 100%;
-    min-height: calc(100dvh - 56px);
-    flex-direction: column;
-    overflow: visible;
-  }
-  .folien-left {
-    width: 100%;
-    padding: 1rem;
-    overflow: visible;
-  }
-  .folien-right {
-    width: 100%;
-    height: min(70dvh, 560px);
-    min-height: 360px;
-    border-left: none;
-    border-top: 1px solid #1a1a1a;
-  }
-
-  .card {
-    padding: 1rem;
-    border-radius: 14px;
-  }
-  .grid-3,
-  .grid-4 {
-    grid-template-columns: 1fr;
-  }
-  .action-row,
-  .modal-actions,
-  .upload-actions {
-    flex-direction: column;
-  }
-  .action-row .btn-primary,
-  .btn-primary,
-  .btn-secondary,
-  .btn-danger,
-  .chat-send {
-    min-height: 44px;
-  }
-  .btn-secondary,
-  .btn-danger { width: 100%; }
-
-  .output-toolbar,
-  .results-toolbar {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .output-toolbar > div:last-child,
-  .results-actions {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .results-actions .search-wrap { grid-column: 1 / -1; }
-  .search-wrap input,
-  .search-wrap input:focus {
-    width: 100%;
-  }
-  .topic-chip { min-height: 36px; }
-
-  .pdf-item {
-    align-items: flex-start;
-    gap: 8px;
-    flex-direction: column;
-  }
-  .pdf-item span { max-width: 100%; }
-  .pdf-item-actions { width: 100%; justify-content: flex-end; }
-
-  .slide-item,
-  .summary-block {
-    padding: 1rem;
-  }
-  .slide-meta {
-    flex-wrap: wrap;
-  }
-  .chat-input-wrap {
-    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
-  }
-
-  .modal-overlay,
-  #apiKeyModal {
-    align-items: flex-end !important;
-  }
-  .modal,
-  #apiKeyModal > div {
-    width: 100% !important;
-    max-width: 100vw !important;
-    border-radius: 16px 16px 0 0 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .main,
-  .folien-left { padding: 0.75rem; }
-  .card { padding: 0.85rem; }
-  textarea { min-height: 130px; }
-  .output-toolbar > div:last-child,
-  .results-actions { grid-template-columns: 1fr; }
-  .chat-msg { max-width: 96%; }
-  .folien-right { height: 72dvh; }
-}
-
 </style>
 </head>
 <body>
 
-<div class="mobile-topbar" aria-label="Mobile Navigation">
-  <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Menü öffnen">☰</button>
-  <div class="mobile-title">
-    <strong>Jonas · Toolbox</strong>
-    <span id="mobileTabLabel">Schreibagent</span>
-  </div>
-</div>
-<div class="sidebar-backdrop" onclick="closeMobileMenu()"></div>
-
-<div class="sidebar">
+<button id="menuBtn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="sidebar" onclick="if(event.target.closest('.nav-item, .project-item-name')) this.classList.remove('open')">
   <!-- API KEY BUTTON -->
-  <button class="nav-item" onclick="openAPIKeyModal()" id="apiKeyBtn" style="margin-bottom:4px;">🔑 API-Key <span id="apiKeyStatus">✅</span></button>
+  <button class="nav-item" onclick="openAPIKeyModal()" id="apiKeyBtn" style="margin-bottom:4px;">🔑 API-Key <span id="apiKeyStatus">❌</span></button>
+  <button class="nav-item" onclick="openSyncModal()" id="syncBtn" style="margin-bottom:4px;">☁ Cloud-Sync <span id="syncStatus">❌</span></button>
   <div class="volume-wrap">
     <span class="volume-icon" id="volIcon" onclick="toggleMute()">🔊</span>
     <input type="range" id="volumeSlider" min="0" max="100" value="40" oninput="setVolume(this.value)" title="Lautstärke">
   </div>
   <div class="sidebar-logo">Toolbox <span>BWL · Interne Revision</span></div>
-  <button class="nav-item active" onclick="switchTab(&#39;schreib&#39;, this)">✦ Schreibagent</button>
-  <button class="nav-item" onclick="switchTab(&#39;folien&#39;, this)">📑 Folien-Zusammenfasser</button>
+  <button class="nav-item active" onclick="switchTab('schreib', this)">✦ Schreibagent</button>
+  <button class="nav-item" id="nav-folien" onclick="switchTab('folien', this)">📑 Folien-Zusammenfasser</button>
+  <button class="nav-item" id="nav-mc" onclick="switchTab('mc', this)">📝 MC-Fragen</button>
 
   <div class="sidebar-section">Projekte</div>
   <button class="nav-item" onclick="saveProject()" id="saveProjectBtn">💾 Speichern</button>
@@ -425,14 +259,14 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
     <textarea id="inputText" placeholder="Text hier einfügen..."></textarea>
     <hr>
     <label style="margin-bottom:6px;">Referenzdokumente (optional)</label>
-    <div class="upload-zone" id="schreibUploadZone" onclick="if(!this.classList.contains(&#39;has-file&#39;)) document.getElementById(&#39;pdfUpload&#39;).click()">
+    <div class="upload-zone" id="schreibUploadZone" onclick="if(!this.classList.contains('has-file')) document.getElementById('pdfUpload').click()">
       <div class="upload-zone-text" id="schreibUploadText">📄 PDFs hochladen – mehrere möglich</div>
-      <input type="file" id="pdfUpload" accept=".pdf" multiple="" style="display:none" onchange="handleRefPDF(this)">
+      <input type="file" id="pdfUpload" accept=".pdf" multiple style="display:none" onchange="handleRefPDF(this)">
     </div>
     <div class="pdf-list" id="pdfList"></div>
     <div id="pdfAddMore" style="display:none; margin-top:6px;">
-      <button class="btn-secondary" style="width:100%; font-size:12px;" onclick="document.getElementById(&#39;pdfUploadExtra&#39;).click()">+ Weiteres PDF hinzufügen</button>
-      <input type="file" id="pdfUploadExtra" accept=".pdf" multiple="" style="display:none" onchange="handleRefPDF(this)">
+      <button class="btn-secondary" style="width:100%; font-size:12px;" onclick="document.getElementById('pdfUploadExtra').click()">+ Weiteres PDF hinzufügen</button>
+      <input type="file" id="pdfUploadExtra" accept=".pdf" multiple style="display:none" onchange="handleRefPDF(this)">
     </div>
     <p class="status-bar" id="pdfStatus"></p>
     <hr>
@@ -476,7 +310,7 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
       <div class="card-title" style="margin:0;">Ergebnis</div>
       <div style="display:flex;gap:6px;">
         <button class="btn-secondary" onclick="rewrite()">↺ Neu generieren</button>
-        <button class="btn-secondary" onclick="copyEl(&#39;outputText&#39;,this)">Kopieren</button>
+        <button class="btn-secondary" onclick="copyEl('outputText',this)">Kopieren</button>
         <button class="btn-danger" onclick="clearSchreibOutput()">✕ Löschen</button>
       </div>
     </div>
@@ -485,15 +319,71 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
 </div>
 
 <!-- FOLIEN ZUSAMMENFASSER -->
+<div class="main" id="panel-mc" style="display:none;">
+  <div class="card">
+    <div class="card-title">Multiple-Choice-Fragen aus Skript</div>
+    <div class="upload-zone" id="mcZone" onclick="if(!this.classList.contains('has-file')) document.getElementById('mcUpload').click()">
+      <div class="upload-zone-text" id="mcZoneText">📝 Skript (PDF) hochladen</div>
+      <input type="file" id="mcUpload" accept=".pdf" style="display:none" onchange="handleMcUpload(this)">
+      <div class="upload-actions" id="mcUploadActions" style="display:none;">
+        <button class="btn-secondary" onclick="event.stopPropagation(); document.getElementById('mcReplace').click()">↺ Austauschen</button>
+        <button class="btn-danger" onclick="event.stopPropagation(); clearMcUpload()">✕ Entfernen</button>
+        <input type="file" id="mcReplace" accept=".pdf" style="display:none" onchange="handleMcUpload(this)">
+      </div>
+    </div>
+    <p class="status-bar" id="mcFileStatus"></p>
+    <div id="mcRangeWrap" style="display:none;">
+      <hr>
+      <label style="margin-bottom:10px;">Seitenbereich</label>
+      <div class="range-container">
+        <div class="range-labels"><span>Seite <strong id="mcFromLabel">1</strong></span><span>bis Seite <strong id="mcToLabel">1</strong></span></div>
+        <div class="range-track">
+          <div class="range-selected" id="mcRangeSelected"></div>
+          <input type="range" id="mcFrom" min="1" max="100" value="1" oninput="updateMcRange()">
+          <input type="range" id="mcTo" min="1" max="100" value="100" oninput="updateMcRange()">
+        </div>
+        <div class="range-info" id="mcRangeInfo"></div>
+      </div>
+    </div>
+    <hr>
+    <div class="grid grid-4">
+      <div class="attr-group"><label>Anzahl Fragen</label>
+        <select id="mcCount"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div>
+      <div class="attr-group"><label>Schwierigkeit</label>
+        <select id="mcDiff"><option value="leicht">Leicht (Wissen)</option><option value="mittel" selected>Mittel (Verständnis)</option><option value="schwer">Schwer (Anwendung/Transfer)</option><option value="gemischt">Gemischt</option></select></div>
+      <div class="attr-group"><label>Antwortoptionen</label>
+        <select id="mcOpts"><option>3</option><option selected>4</option><option>5</option></select></div>
+      <div class="attr-group"><label>Sprache</label>
+        <select id="mcLang"><option>Deutsch</option><option>English</option></select></div>
+    </div>
+    <div class="attr-group" style="margin-top:6px;"><label>Optionaler Fokus (z.B. Thema oder Kapitel)</label>
+      <input type="text" id="mcFocus" placeholder="leer = gesamter Bereich"></div>
+    <button class="btn-primary" id="mcBtn" onclick="handleMcBtn()">Fragen generieren</button>
+    <div class="progress-wrap" id="mcProgWrap" style="display:none;margin-top:10px;"><div style="height:4px;background:#1f1f1f;border-radius:2px;"><div id="mcProg" style="height:100%;width:0;background:#e0e0e0;border-radius:2px;transition:width .3s;"></div></div></div>
+    <p class="status-bar" id="mcStatus"></p>
+  </div>
+  <div id="mcResultWrap" style="display:none;">
+    <div class="mc-score">
+      <span>Richtig: <strong id="mcScoreOk">0</strong> / <strong id="mcScoreDone">0</strong> beantwortet · <strong id="mcScoreTotal">0</strong> Fragen</span>
+      <button class="btn-secondary" onclick="mcSaveProject()">💾 Speichern</button>
+      <button class="btn-secondary" onclick="mcRevealAll()">Alle auflösen</button>
+      <button class="btn-secondary" onclick="mcResetAnswers()">Antworten zurücksetzen</button>
+      <button class="btn-secondary" onclick="mcExport(true)">⬇ .md (mit Lösungen)</button>
+      <button class="btn-secondary" onclick="mcExport(false)">⬇ .md (ohne Lösungen)</button>
+    </div>
+    <div id="mcList"></div>
+  </div>
+</div>
+
 <div class="folien-layout" id="panel-folien" style="display:none;">
   <div class="folien-left">
     <div class="card">
       <div class="card-title">Vorlesungsfolien zusammenfassen</div>
-      <div class="upload-zone" id="folienZone" onclick="if(!this.classList.contains(&#39;has-file&#39;)) document.getElementById(&#39;folienUpload&#39;).click()">
+      <div class="upload-zone" id="folienZone" onclick="if(!this.classList.contains('has-file')) document.getElementById('folienUpload').click()">
         <div class="upload-zone-text" id="folienZoneText">📑 PDF hochladen</div>
         <input type="file" id="folienUpload" accept=".pdf" style="display:none" onchange="handleFolienUpload(this)">
         <div class="upload-actions" id="folienUploadActions" style="display:none;">
-          <button class="btn-secondary" onclick="event.stopPropagation(); document.getElementById(&#39;folienReplace&#39;).click()">↺ Austauschen</button>
+          <button class="btn-secondary" onclick="event.stopPropagation(); document.getElementById('folienReplace').click()">↺ Austauschen</button>
           <button class="btn-danger" onclick="event.stopPropagation(); clearFolienUpload()">✕ Entfernen</button>
           <input type="file" id="folienReplace" accept=".pdf" style="display:none" onchange="handleFolienUpload(this)">
         </div>
@@ -569,12 +459,12 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
         <div class="results-count" id="resultsCount"></div>
         <div class="results-actions">
           <div class="search-wrap">
-            <input type="text" id="slideSearch" placeholder="Folie suchen..." oninput="searchSlide(this.value)">
+            <input type="text" id="slideSearch" placeholder="Folie suchen..." oninput="searchSlide(this.value)" />
           </div>
           <button class="btn-secondary" id="filterBtn" onclick="toggleFilter()" title="Themen-Navigation">🏷 Überschriften</button>
           <button class="btn-secondary" id="copyAllBtn" onclick="copyAllSlides()">Kopieren</button>
-          <button class="btn-secondary" onclick="downloadSlides(&#39;md&#39;)">↓ .md</button>
-          <button class="btn-secondary" onclick="downloadSlides(&#39;txt&#39;)">↓ .txt</button>
+          <button class="btn-secondary" onclick="downloadSlides('md')">↓ .md</button>
+          <button class="btn-secondary" onclick="downloadSlides('txt')">↓ .txt</button>
           <button class="btn-danger" onclick="resetFolienResults()">✕ Löschen</button>
         </div>
       </div>
@@ -603,7 +493,7 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
       </div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input-wrap">
-        <textarea class="chat-input" id="chatInput" placeholder="Frage stellen..." rows="1" onkeydown="if(event.key===&#39;Enter&#39;&amp;&amp;!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+        <textarea class="chat-input" id="chatInput" placeholder="Frage stellen..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
         <button class="chat-send" id="chatSendBtn" onclick="sendChat()">↑</button>
       </div>
     </div>
@@ -612,11 +502,7 @@ textarea, select, input { font-size: 16px; } /* prevents iOS auto-zoom */
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-if (window.pdfjsLib) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-} else {
-  console.warn('PDF.js konnte nicht geladen werden. Prüfe die Internetverbindung oder den CDN-Zugriff.');
-}
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 // API Key stored in localStorage – never hardcoded
 function getAPIKey() {
   return localStorage.getItem('toolbox_api_key') || '';
@@ -728,7 +614,7 @@ async function loadAudioBuffers() {
     clickBuffer = await decodeB64(CLICK_B64);
   } catch(e) { console.warn('Audio load failed:', e); }
 }
-window.addEventListener('load', () => { loadAudioBuffers(); renderSidebarProjects(); initAPIKeyUI(); updateMobileTitle('schreib'); });
+window.addEventListener('load', () => { loadAudioBuffers(); renderSidebarProjects(); initAPIKeyUI(); });
 
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -902,12 +788,14 @@ function getProjects() {
   try { return JSON.parse(localStorage.getItem('toolbox_projects') || '{}'); } catch(e) { return {}; }
 }
 function saveProjects(projects) {
+  try { if (typeof scheduleCloudPush === 'function') scheduleCloudPush(); } catch(e) {}
   try { localStorage.setItem('toolbox_projects', JSON.stringify(projects)); } catch(e) {
     alert('Speichern fehlgeschlagen – localStorage möglicherweise voll.');
   }
 }
 
 function saveProject() {
+  if (document.getElementById('panel-mc').style.display === 'block') { mcSaveProject(); return; }
   const items = document.querySelectorAll('.slide-item:not(.orga), .summary-block');
   if (!items.length) {
     showToast('⚠ Noch nichts zum Speichern – starte zuerst die Generierung.');
@@ -930,6 +818,7 @@ function saveProject() {
 
   const project = {
     name,
+    updated: Date.now(),
     date: new Date().toLocaleDateString('de-DE'),
     partial: isRunning,
     fileName: document.getElementById('folienZoneText').textContent.replace('✓ ',''),
@@ -968,8 +857,8 @@ function showProjects() {
         const p = projects[id];
         return `<div class="project-list-item" onclick="loadProject('${id}'); document.querySelector('.modal-overlay').remove();">
           <div class="project-list-info">
-            <div class="project-list-name">📁 ${p.name}</div>
-            <div class="project-list-meta">${p.fileName || ''} · ${p.blocks?.length || 0} Blöcke · ${p.date}</div>
+            <div class="project-list-name">${p.type === 'mc' ? '📝' : '📁'} ${p.name}</div>
+            <div class="project-list-meta">${p.fileName || ''} · ${p.type === 'mc' ? (p.questions?.length || 0) + ' MC-Fragen' : (p.blocks?.length || 0) + ' Blöcke'} · ${p.date}</div>
           </div>
           <button class="project-list-del" onclick="event.stopPropagation(); deleteProject('${id}', this.closest('.project-list-item'))">✕</button>
         </div>`;
@@ -990,12 +879,10 @@ function loadProject(id) {
   const projects = getProjects();
   const p = projects[id];
   if (!p) return;
+  if (p.type === 'mc') { mcLoadProject(id, p); return; }
 
   // Switch to folien tab
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelector('.nav-item:nth-child(3)').classList.add('active');
-  document.getElementById('panel-schreib').style.display = 'none';
-  document.getElementById('panel-folien').style.display = 'flex';
+  switchTab('folien', document.getElementById('nav-folien'));
 
   // Full reset first
   resetFolienResults();
@@ -1071,6 +958,7 @@ function loadProject(id) {
 }
 
 function fullReset() {
+  try { mcFullReset(); } catch(e) {}
   // Stop any running generation
   if (folienRunning) {
     folienAbortController.abort();
@@ -1128,6 +1016,7 @@ function deleteProject(id, el) {
   if (!confirm('Projekt löschen?')) return;
   const projects = getProjects();
   delete projects[id];
+  try { const d = JSON.parse(localStorage.getItem('toolbox_deleted') || '{}'); d[id] = Date.now(); localStorage.setItem('toolbox_deleted', JSON.stringify(d)); } catch(e) {}
   saveProjects(projects);
   el?.remove();
   renderSidebarProjects();
@@ -1156,30 +1045,400 @@ function showToast(msg) {
 
 // Audio + sidebar loaded on startup (see above)
 
-// NAV
-function toggleMobileMenu() {
-  document.body.classList.toggle('sidebar-open');
-}
-function closeMobileMenu() {
-  document.body.classList.remove('sidebar-open');
-}
-function updateMobileTitle(name) {
-  const label = document.getElementById('mobileTabLabel');
-  if (label) label.textContent = name === 'folien' ? 'Folien-Zusammenfasser' : 'Schreibagent';
+
+// ============ MC-FRAGEN ============
+let mcProjectName = null;
+let mcPages = [], mcFileName = '', mcQuestions = [], mcRunning = false, mcAbort = null;
+
+async function handleMcUpload(input) {
+  const file = input.files[0]; if (!file) return;
+  document.getElementById('mcFileStatus').textContent = 'Lese PDF …';
+  try {
+    const ab = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+    const pages = [];
+    for (let j = 1; j <= pdf.numPages; j++) {
+      const pg = await pdf.getPage(j);
+      const c = await pg.getTextContent();
+      const text = c.items.map(x => x.str).join(' ').replace(/\s+/g, ' ').trim();
+      pages.push({ page: j, text });
+    }
+    mcPages = pages; mcFileName = file.name;
+    const zone = document.getElementById('mcZone');
+    zone.classList.add('has-file');
+    document.getElementById('mcZoneText').textContent = '✓ ' + file.name + ' (' + pdf.numPages + ' Seiten)';
+    document.getElementById('mcUploadActions').style.display = 'flex';
+    const n = pdf.numPages;
+    ['mcFrom','mcTo'].forEach(id => { const e = document.getElementById(id); e.max = n; e.min = 1; });
+    document.getElementById('mcFrom').value = 1; document.getElementById('mcTo').value = n;
+    document.getElementById('mcRangeWrap').style.display = 'block';
+    updateMcRange();
+    const empty = pages.filter(p => p.text.length < 20).length;
+    document.getElementById('mcFileStatus').textContent = empty > n / 2 ? '⚠ Viele Seiten ohne Text (evtl. gescanntes PDF).' : '';
+  } catch (e) {
+    document.getElementById('mcFileStatus').textContent = 'Fehler beim Lesen: ' + e.message;
+  }
+  input.value = '';
 }
 
+function updateMcRange() {
+  let f = parseInt(document.getElementById('mcFrom').value), t = parseInt(document.getElementById('mcTo').value);
+  const lo = Math.min(f, t), hi = Math.max(f, t), max = mcPages.length || 1;
+  document.getElementById('mcFromLabel').textContent = lo;
+  document.getElementById('mcToLabel').textContent = hi;
+  const pf = ((lo - 1) / (max - 1 || 1)) * 100, pt = ((hi - 1) / (max - 1 || 1)) * 100;
+  document.getElementById('mcRangeSelected').style.cssText = `left:${pf}%;width:${pt - pf}%`;
+  document.getElementById('mcRangeInfo').textContent = (lo === 1 && hi === max) ? 'Alle Seiten ausgewählt' : `Seiten ${lo}–${hi} (${hi - lo + 1})`;
+}
+
+function clearMcUpload() {
+  if (mcRunning) mcStop();
+  mcPages = []; mcFileName = '';
+  document.getElementById('mcZone').classList.remove('has-file');
+  document.getElementById('mcZoneText').textContent = '📝 Skript (PDF) hochladen';
+  document.getElementById('mcUploadActions').style.display = 'none';
+  document.getElementById('mcRangeWrap').style.display = 'none';
+  document.getElementById('mcFileStatus').textContent = '';
+}
+
+function mcFullReset() {
+  if (mcRunning) mcStop();
+  clearMcUpload();
+  mcQuestions = []; mcProjectName = null;
+  document.getElementById('mcList').innerHTML = '';
+  document.getElementById('mcResultWrap').style.display = 'none';
+  document.getElementById('mcStatus').textContent = '';
+  document.getElementById('mcProgWrap').style.display = 'none';
+  document.getElementById('mcFocus').value = '';
+}
+
+function mcStop() {
+  if (mcAbort) mcAbort.abort();
+  mcRunning = false;
+  const b = document.getElementById('mcBtn'); b.textContent = 'Fragen generieren'; b.classList.remove('running');
+}
+
+function handleMcBtn() {
+  if (mcRunning) { mcStop(); document.getElementById('mcStatus').textContent = 'Abgebrochen.'; return; }
+  mcGenerate();
+}
+
+function mcSegments(pages, n) {
+  // Verteilt den Bereich auf n Teile, damit alle Abschnitte abgedeckt werden
+  const MAX = 45000;
+  const segs = [];
+  const per = Math.ceil(pages.length / n);
+  for (let i = 0; i < n; i++) {
+    const part = pages.slice(i * per, (i + 1) * per);
+    if (!part.length) continue;
+    let txt = part.map(p => `[Seite ${p.page}]\n${p.text}`).join('\n\n');
+    if (txt.length > MAX) txt = txt.slice(0, MAX);
+    segs.push({ txt, from: part[0].page, to: part[part.length - 1].page });
+  }
+  return segs;
+}
+
+function mcParseJSON(raw) {
+  let t = raw.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+  const a = t.indexOf('['), b = t.lastIndexOf(']');
+  if (a < 0 || b < 0) throw new Error('Keine JSON-Liste in der Antwort');
+  return JSON.parse(t.slice(a, b + 1));
+}
+
+async function mcGenerate() {
+  if (!getAPIKey()) { openAPIKeyModal(); return; }
+  if (!mcPages.length) { showToast('Bitte zuerst ein PDF hochladen'); return; }
+  const lo = Math.min(+document.getElementById('mcFrom').value, +document.getElementById('mcTo').value);
+  const hi = Math.max(+document.getElementById('mcFrom').value, +document.getElementById('mcTo').value);
+  const pages = mcPages.filter(p => p.page >= lo && p.page <= hi && p.text.length > 15);
+  if (!pages.length) { document.getElementById('mcStatus').textContent = 'Im gewählten Bereich wurde kein Text gefunden.'; return; }
+
+  const total = parseInt(document.getElementById('mcCount').value);
+  const diff = document.getElementById('mcDiff').value;
+  const nOpt = parseInt(document.getElementById('mcOpts').value);
+  const lang = document.getElementById('mcLang').value;
+  const focus = document.getElementById('mcFocus').value.trim();
+
+  const batchSize = 5;
+  const nBatches = Math.ceil(total / batchSize);
+  const segs = mcSegments(pages, Math.min(nBatches, pages.length));
+
+  // Neu generieren: alte Fragen löschen
+  mcQuestions = []; mcProjectName = null;
+  document.getElementById('mcList').innerHTML = '';
+  document.getElementById('mcResultWrap').style.display = 'block';
+  mcUpdateScore();
+
+  mcRunning = true; mcAbort = new AbortController();
+  const btn = document.getElementById('mcBtn'); btn.textContent = '⏹ Abbrechen'; btn.classList.add('running');
+  document.getElementById('mcProgWrap').style.display = 'block';
+  document.getElementById('mcProg').style.width = '0%';
+  const status = document.getElementById('mcStatus');
+
+  try {
+    let remaining = total;
+    for (let i = 0; i < segs.length && remaining > 0 && mcRunning; i++) {
+      const left = segs.length - i;
+      const want = Math.min(remaining, Math.ceil(remaining / left));
+      status.textContent = `Generiere Fragen … (${mcQuestions.length}/${total})`;
+      const letters = 'ABCDE'.slice(0, nOpt);
+      const prev = mcQuestions.map(q => '- ' + q.frage).join('\n');
+      const prompt = `Du bist Prüfungsautor an einer Hochschule (Betriebswirtschaft). Erstelle genau ${want} Multiple-Choice-Fragen ausschließlich auf Grundlage des folgenden Skript-Auszugs.
+
+Regeln:
+- Sprache: ${lang}.
+- Schwierigkeit: ${diff === 'gemischt' ? 'gemischt (leicht bis schwer)' : diff}. Leicht = Faktenwissen, mittel = Verständnis/Zusammenhänge, schwer = Anwendung/Transfer/Abgrenzung.
+- Genau ${nOpt} Antwortoptionen pro Frage, genau EINE ist korrekt. Falsche Optionen müssen plausibel, aber eindeutig falsch sein; ähnliche Länge, keine "Alle/Keine der obigen"-Optionen.
+- Nur Inhalte aus dem Auszug, nichts erfinden. Keine Fragen zu Organisatorischem (Termine, Literaturlisten, Agenda).
+- Die korrekte Option variiert über die Fragen hinweg.
+- "folie" = Seitenzahl(en) im Skript, auf die sich die Frage stützt (z.B. "12" oder "12–13").
+- "erklaerung" = 1–3 Sätze, warum die richtige Antwort stimmt (und kurz, warum typische Distraktoren falsch sind).
+${focus ? `- Schwerpunkt: ${focus}\n` : ''}${prev ? `- Diese Fragen existieren schon, NICHT wiederholen:\n${prev}\n` : ''}
+Antworte NUR mit einem JSON-Array ohne Markdown, Format:
+[{"frage":"...","optionen":["...","..."],"korrekt":"${letters[0]}","erklaerung":"...","folie":"12"}]
+"korrekt" ist der Buchstabe (${letters.split('').join(', ')}) der richtigen Option, Reihenfolge von "optionen" entspricht den Buchstaben.
+
+SKRIPT-AUSZUG (Seiten ${segs[i].from}–${segs[i].to}):
+${segs[i].txt}`;
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST", signal: mcAbort.signal,
+        headers: { "Content-Type": "application/json", "x-api-key": getAPIKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+        body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 4000, messages: [{ role: "user", content: prompt }] })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      const raw = (data.content || []).map(c => c.text || '').join('');
+      let arr;
+      try { arr = mcParseJSON(raw); } catch (e) { throw new Error('Antwort nicht lesbar: ' + e.message); }
+      for (const q of arr) {
+        if (!q || !q.frage || !Array.isArray(q.optionen) || q.optionen.length < 2) continue;
+        let k = String(q.korrekt || '').trim().toUpperCase().charAt(0);
+        let idx = 'ABCDE'.indexOf(k);
+        if (idx < 0 || idx >= q.optionen.length) continue;
+        mcQuestions.push({ frage: q.frage, optionen: q.optionen.map(o => String(o).replace(/^[A-E][\)\.:]\s+/, '')), korrekt: idx, erklaerung: q.erklaerung || '', folie: String(q.folie || ''), antwort: null });
+      }
+      remaining = total - mcQuestions.length;
+      mcRender();
+      try { playSlideDone(); } catch (e) {}
+      document.getElementById('mcProg').style.width = Math.min(100, (mcQuestions.length / total) * 100) + '%';
+    }
+    status.textContent = mcRunning ? `✓ ${mcQuestions.length} Fragen erstellt.` : status.textContent;
+  } catch (e) {
+    if (e.name === 'AbortError') status.textContent = 'Abgebrochen.';
+    else status.textContent = '❌ Fehler: ' + e.message;
+  } finally {
+    mcRunning = false;
+    btn.textContent = 'Fragen generieren'; btn.classList.remove('running');
+    setTimeout(() => { if (!mcRunning) document.getElementById('mcProgWrap').style.display = 'none'; }, 800);
+  }
+}
+
+
+function mcSaveProject() {
+  if (!mcQuestions.length) { showToast('⚠ Noch keine Fragen zum Speichern.'); return; }
+  const name = prompt('Projektname (MC-Fragen):', currentProject || (mcFileName ? mcFileName.replace(/\.pdf$/i, '') + ' – MC' : 'MC-Fragen'));
+  if (!name) return;
+  const projects = getProjects();
+  const existingId = Object.keys(projects).find(id => projects[id].name === name);
+  const id = existingId || Date.now().toString();
+  projects[id] = { type: 'mc', name, updated: Date.now(), date: new Date().toLocaleDateString('de-DE'), fileName: mcFileName, questions: mcQuestions };
+  mcProjectName = name;
+  saveProjects(projects);
+  currentProject = name;
+  renderSidebarProjects();
+  showToast('✓ ' + mcQuestions.length + ' Fragen gespeichert');
+  try { playPop(); } catch (e) {}
+}
+function mcLoadProject(id, p) {
+  switchTab('mc', document.getElementById('nav-mc'));
+  mcQuestions = (p.questions || []).map(q => ({ ...q, antwort: (q.antwort === undefined ? null : q.antwort) }));
+  mcProjectName = p.name;
+  mcFileName = p.fileName || '';
+  document.getElementById('mcResultWrap').style.display = 'block';
+  document.getElementById('mcStatus').textContent = 'Projekt geladen: ' + mcQuestions.length + ' Fragen';
+  mcRender();
+  currentProject = p.name;
+  renderSidebarProjects();
+  showToast('✓ "' + p.name + '" geladen');
+}
+
+function mcEsc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function mcRender() {
+  const list = document.getElementById('mcList');
+  list.innerHTML = mcQuestions.map((q, i) => {
+    const ans = q.antwort !== null;
+    return `<div class="mc-q ${ans ? 'answered' : ''}" id="mcq_${i}">
+      <div class="mc-q-head"><span>Frage ${i + 1}</span><span>${q.folie ? 'Seite ' + mcEsc(q.folie) : ''}</span></div>
+      <div class="mc-q-text">${mcEsc(q.frage)}</div>
+      ${q.optionen.map((o, j) => {
+        let cls = '';
+        if (ans) { if (j === q.korrekt) cls = 'correct'; else if (j === q.antwort) cls = 'wrong'; }
+        return `<div class="mc-opt ${cls}" onclick="mcAnswer(${i},${j})"><span class="mc-letter">${'ABCDE'[j]}</span><span>${mcEsc(o)}</span></div>`;
+      }).join('')}
+      <div class="mc-expl"><strong style="color:#aaa;">Richtig: ${'ABCDE'[q.korrekt]}.</strong> ${mcEsc(q.erklaerung)}${q.folie ? ' <span style="color:#555;">(Seite ' + mcEsc(q.folie) + ')</span>' : ''}</div>
+    </div>`;
+  }).join('');
+  mcUpdateScore();
+}
+
+function mcAnswer(i, j) {
+  const q = mcQuestions[i];
+  if (q.antwort !== null) return;
+  q.antwort = j;
+  mcRender();
+  mcAutosave();
+  try { if (j === q.korrekt) playPop(); } catch (e) {}
+}
+function mcRevealAll() { mcQuestions.forEach(q => { if (q.antwort === null) q.antwort = -1; }); mcRender(); mcAutosave(); }
+function mcResetAnswers() { mcQuestions.forEach(q => q.antwort = null); mcRender(); mcAutosave(); }
+function mcAutosave() {
+  if (!mcProjectName) return;
+  const projects = getProjects();
+  const id = Object.keys(projects).find(i => projects[i].type === 'mc' && projects[i].name === mcProjectName);
+  if (!id) return;
+  projects[id].questions = mcQuestions;
+  projects[id].updated = Date.now();
+  saveProjects(projects);
+}
+function mcUpdateScore() {
+  const done = mcQuestions.filter(q => q.antwort !== null && q.antwort >= 0).length;
+  const ok = mcQuestions.filter(q => q.antwort === q.korrekt).length;
+  document.getElementById('mcScoreOk').textContent = ok;
+  document.getElementById('mcScoreDone').textContent = done;
+  document.getElementById('mcScoreTotal').textContent = mcQuestions.length;
+}
+function mcExport(withSolutions) {
+  if (!mcQuestions.length) return;
+  let md = `# Multiple-Choice-Fragen – ${mcFileName}\n\n`;
+  mcQuestions.forEach((q, i) => {
+    md += `**${i + 1}. ${q.frage}**\n\n` + q.optionen.map((o, j) => `- ${'ABCDE'[j]}) ${o}`).join('\n') + '\n\n';
+    if (withSolutions) md += `*Lösung: ${'ABCDE'[q.korrekt]}* – ${q.erklaerung}${q.folie ? ' (Seite ' + q.folie + ')' : ''}\n\n`;
+  });
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'MC-Fragen' + (withSolutions ? '' : '_ohne_Loesung') + '.md'; a.click();
+}
+
+// ============ CLOUD-SYNC (privates GitHub-Gist) ============
+let cloudBusy = false, cloudTimer = null;
+const GIST_FILE = 'toolbox-projects.json', GIST_DESC = 'toolbox-projects (Jonas Toolbox)';
+function syncToken() { try { return localStorage.getItem('toolbox_gh_token') || ''; } catch (e) { return ''; } }
+function gistId() { try { return localStorage.getItem('toolbox_gist_id') || ''; } catch (e) { return ''; } }
+function updateSyncUI(state) {
+  const el = document.getElementById('syncStatus'); if (!el) return;
+  el.textContent = state || (syncToken() ? '✅' : '❌');
+}
+function ghFetch(url, opts = {}) {
+  return fetch(url, { ...opts, headers: { 'Authorization': 'Bearer ' + syncToken(), 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+}
+async function ensureGist() {
+  if (gistId()) return gistId();
+  const r = await ghFetch('https://api.github.com/gists?per_page=100');
+  if (r.status === 401) throw new Error('Token ungültig');
+  if (!r.ok) throw new Error('GitHub-Fehler ' + r.status);
+  const list = await r.json();
+  const found = list.find(g => g.files && g.files[GIST_FILE]);
+  if (found) { localStorage.setItem('toolbox_gist_id', found.id); return found.id; }
+  const c = await ghFetch('https://api.github.com/gists', { method: 'POST', body: JSON.stringify({ description: GIST_DESC, public: false, files: { [GIST_FILE]: { content: JSON.stringify({ projects: {}, deleted: {} }) } } }) });
+  if (!c.ok) throw new Error('Gist konnte nicht erstellt werden (' + c.status + ') – hat der Token die Berechtigung „gist“?');
+  const g = await c.json();
+  localStorage.setItem('toolbox_gist_id', g.id);
+  return g.id;
+}
+function mergeProjects(local, remote, delLocal, delRemote) {
+  const del = { ...delRemote };
+  for (const k in delLocal) del[k] = Math.max(del[k] || 0, delLocal[k]);
+  const out = {};
+  const ids = new Set([...Object.keys(local), ...Object.keys(remote)]);
+  ids.forEach(id => {
+    const a = local[id], b = remote[id];
+    const pick = !a ? b : !b ? a : ((b.updated || 0) > (a.updated || 0) ? b : a);
+    if ((del[id] || 0) > (pick.updated || 0)) return;
+    out[id] = pick;
+  });
+  return { projects: out, deleted: del };
+}
+async function cloudSync(silent) {
+  if (!syncToken() || cloudBusy) return;
+  cloudBusy = true; updateSyncUI('⏳');
+  try {
+    const id = await ensureGist();
+    const r = await ghFetch('https://api.github.com/gists/' + id);
+    if (r.status === 404) { localStorage.removeItem('toolbox_gist_id'); throw new Error('Gist nicht gefunden – bitte erneut versuchen'); }
+    if (!r.ok) throw new Error('GitHub-Fehler ' + r.status);
+    const g = await r.json();
+    let f = g.files[GIST_FILE], text = f ? f.content : '{}';
+    if (f && f.truncated) text = await (await fetch(f.raw_url)).text();
+    let remote = {}; try { remote = JSON.parse(text); } catch (e) {}
+    let delLocal = {}; try { delLocal = JSON.parse(localStorage.getItem('toolbox_deleted') || '{}'); } catch (e) {}
+    const m = mergeProjects(getProjects(), remote.projects || {}, delLocal, remote.deleted || {});
+    localStorage.setItem('toolbox_projects', JSON.stringify(m.projects));
+    localStorage.setItem('toolbox_deleted', JSON.stringify(m.deleted));
+    const payload = JSON.stringify({ projects: m.projects, deleted: m.deleted });
+    if (payload !== JSON.stringify({ projects: remote.projects || {}, deleted: remote.deleted || {} })) {
+      const u = await ghFetch('https://api.github.com/gists/' + id, { method: 'PATCH', body: JSON.stringify({ files: { [GIST_FILE]: { content: payload } } }) });
+      if (!u.ok) throw new Error('Hochladen fehlgeschlagen (' + u.status + ')');
+    }
+    renderSidebarProjects();
+    updateSyncUI('✅');
+    if (!silent) showToast('☁ Synchronisiert (' + Object.keys(m.projects).length + ' Projekte)');
+  } catch (e) {
+    updateSyncUI('⚠');
+    if (!silent) showToast('☁ Sync-Fehler: ' + e.message);
+    console.warn('Cloud-Sync:', e);
+  } finally { cloudBusy = false; }
+}
+function scheduleCloudPush() {
+  if (cloudBusy || !syncToken()) return;
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => cloudSync(true), 1500);
+}
+function openSyncModal() {
+  const ex = document.getElementById('syncModal'); if (ex) { ex.remove(); return; }
+  const o = document.createElement('div');
+  o.id = 'syncModal'; o.className = 'modal-overlay';
+  o.onclick = e => { if (e.target === o) o.remove(); };
+  o.innerHTML = `<div class="modal" style="width:440px;">
+    <div class="modal-title">☁ Cloud-Sync (Projekte auf allen Geräten)</div>
+    <div style="font-size:12px;color:#666;line-height:1.6;margin-bottom:12px;">
+      Deine Projekte werden in einem <strong>geheimen GitHub-Gist</strong> in deinem eigenen Account gespeichert.<br>
+      1. github.com → Settings → Developer settings → Personal access tokens → <em>Tokens (classic)</em> → Generate new token<br>
+      2. Nur den Haken bei <strong>gist</strong> setzen, Token kopieren und hier einfügen.<br>
+      3. Auf jedem Gerät denselben Token eingeben. Der Token bleibt nur in diesem Browser.
+    </div>
+    <input type="password" class="modal-input" id="syncTokenInput" placeholder="ghp_… oder github_pat_…" value="${syncToken()}">
+    <div class="modal-actions">
+      ${syncToken() ? '<button class="btn-danger" onclick="syncDisconnect()">Trennen</button>' : ''}
+      <button class="btn-secondary" onclick="document.getElementById(\'syncModal\').remove()">Abbrechen</button>
+      <button class="btn-secondary" style="color:#e0e0e0;" onclick="saveSyncToken()">Speichern &amp; synchronisieren</button>
+    </div></div>`;
+  document.body.appendChild(o);
+}
+async function saveSyncToken() {
+  const v = document.getElementById('syncTokenInput').value.trim();
+  if (!v) return;
+  localStorage.setItem('toolbox_gh_token', v);
+  localStorage.removeItem('toolbox_gist_id');
+  document.getElementById('syncModal')?.remove();
+  await cloudSync(false);
+}
+function syncDisconnect() {
+  localStorage.removeItem('toolbox_gh_token'); localStorage.removeItem('toolbox_gist_id');
+  document.getElementById('syncModal')?.remove();
+  updateSyncUI(); showToast('☁ Sync getrennt (lokale Projekte bleiben)');
+}
+setTimeout(() => { updateSyncUI(); cloudSync(true); }, 600);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) cloudSync(true); });
+
+// NAV
 function switchTab(name, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
-  if (name === 'folien') {
-    document.getElementById('panel-schreib').style.display = 'none';
-    document.getElementById('panel-folien').style.display = 'flex';
-  } else {
-    document.getElementById('panel-schreib').style.display = 'block';
-    document.getElementById('panel-folien').style.display = 'none';
-  }
-  updateMobileTitle(name);
-  closeMobileMenu();
+  document.getElementById('panel-schreib').style.display = name === 'schreib' ? 'block' : 'none';
+  document.getElementById('panel-folien').style.display = name === 'folien' ? 'flex' : 'none';
+  document.getElementById('panel-mc').style.display = name === 'mc' ? 'block' : 'none';
 }
 
 // ORGA - only exact orga slides, not content slides that mention these words in passing
@@ -2088,6 +2347,5 @@ function copyAllSlides() {
   });
 }
 </script>
-
-
-</body></html>
+</body>
+</html>
